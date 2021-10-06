@@ -30,6 +30,7 @@ from rasa.shared.nlu.constants import (
     ACTION_TEXT,
 )
 from rasa.utils import train_utils
+from rasa.nlu.featurizers.dense_featurizer.openvino_model import OpenVINOModel
 
 MAX_SEQUENCE_LENGTHS = {
     "bert": 512,
@@ -164,6 +165,7 @@ class LanguageModelFeaturizer(DenseFeaturizer):
 
         self.model_weights = self.component_config["model_weights"]
         self.cache_dir = self.component_config["cache_dir"]
+        self.use_openvino = self.component_config.get("use_openvino", False)
 
         if not self.model_weights:
             logger.info(
@@ -195,9 +197,12 @@ class LanguageModelFeaturizer(DenseFeaturizer):
         self.tokenizer = model_tokenizer_dict[self.model_name].from_pretrained(
             self.model_weights, cache_dir=self.cache_dir
         )
-        self.model = model_class_dict[self.model_name].from_pretrained(
-            self.model_weights, cache_dir=self.cache_dir
-        )
+        if self.use_openvino and self.model_name != "xlnet":
+            self.model = OpenVINOModel(self.model_weights, self.component_config)
+        else:
+            self.model = model_class_dict[self.model_name].from_pretrained(
+                self.model_weights, cache_dir=self.cache_dir
+            )
 
         # Use a universal pad token since all transformer architectures do not have a
         # consistent token. Instead of pad_token_id we use unk_token_id because
