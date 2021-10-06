@@ -56,7 +56,7 @@ def skip_on_CI(model_name: Text, model_weights: Text) -> bool:
 
 
 def create_pretrained_transformers_config(
-    model_name: Text, model_weights: Text
+    model_name: Text, model_weights: Text, use_openvino: bool
 ) -> Dict[Text, Text]:
     """Creates a config for LanguageModelFeaturizer.
 
@@ -75,6 +75,7 @@ def create_pretrained_transformers_config(
     config = {"model_name": model_name}
     if model_weights:
         config["model_weights"] = model_weights
+    config["use_openvino"] = use_openvino
     return config
 
 
@@ -86,9 +87,12 @@ def process_training_text(
         [Dict[Text, Any]], LanguageModelFeaturizer
     ],
     whitespace_tokenizer: WhitespaceTokenizer,
+    use_openvino: bool,
 ) -> List[Message]:
     """Creates a featurizer and process training data"""
-    config = create_pretrained_transformers_config(model_name, model_weights)
+    config = create_pretrained_transformers_config(
+        model_name, model_weights, use_openvino
+    )
     lm_featurizer = create_language_model_featurizer(config)
 
     messages = [Message.build(text=text) for text in texts]
@@ -107,9 +111,12 @@ def process_messages(
         [Dict[Text, Any]], LanguageModelFeaturizer
     ],
     whitespace_tokenizer: WhitespaceTokenizer,
+    use_openvino: bool,
 ) -> List[Message]:
     """Creates a featurizer and processes messages"""
-    config = create_pretrained_transformers_config(model_name, model_weights)
+    config = create_pretrained_transformers_config(
+        model_name, model_weights, use_openvino
+    )
     lm_featurizer = create_language_model_featurizer(config)
 
     messages = []
@@ -303,6 +310,7 @@ def process_messages(
         ),
     ],
 )
+@pytest.mark.parametrize("use_openvino", [False, True])
 class TestShapeValuesTrainAndProcess:
     @staticmethod
     def evaluate_message_shapes(
@@ -329,12 +337,12 @@ class TestShapeValuesTrainAndProcess:
             assert np.allclose(
                 computed_sequence_vec[: len(expected_sequence_vec[index]), 0],
                 expected_sequence_vec[index],
-                atol=1e-4,
+                atol=5e-3,
             )
 
             # Look at the first value of first five dimensions
             assert np.allclose(
-                computed_sentence_vec[0][:5], expected_cls_vec[index], atol=1e-4
+                computed_sentence_vec[0][:5], expected_cls_vec[index], atol=3e-3
             )
 
             (intent_sequence_vec, intent_sentence_vec) = messages[
@@ -361,6 +369,7 @@ class TestShapeValuesTrainAndProcess:
             [Dict[Text, Any]], LanguageModelFeaturizer
         ],
         whitespace_tokenizer: WhitespaceTokenizer,
+        use_openvino: bool,
     ):
         messages = process_training_text(
             texts,
@@ -368,6 +377,7 @@ class TestShapeValuesTrainAndProcess:
             model_weights,
             create_language_model_featurizer,
             whitespace_tokenizer,
+            use_openvino,
         )
         self.evaluate_message_shapes(
             messages, expected_shape, expected_sequence_vec, expected_cls_vec
@@ -386,6 +396,7 @@ class TestShapeValuesTrainAndProcess:
             [Dict[Text, Any]], LanguageModelFeaturizer
         ],
         whitespace_tokenizer: WhitespaceTokenizer,
+        use_openvino: bool,
     ):
         messages = process_messages(
             texts,
@@ -393,6 +404,7 @@ class TestShapeValuesTrainAndProcess:
             model_weights,
             create_language_model_featurizer,
             whitespace_tokenizer,
+            use_openvino,
         )
         self.evaluate_message_shapes(
             messages, expected_shape, expected_sequence_vec, expected_cls_vec
@@ -543,6 +555,7 @@ class TestShapeValuesTrainAndProcess:
         ),
     ],
 )
+@pytest.mark.parametrize("use_openvino", [False, True])
 class TestSubTokensTrainAndProcess:
     @staticmethod
     def check_subtokens(
@@ -571,6 +584,7 @@ class TestSubTokensTrainAndProcess:
             [Dict[Text, Any]], LanguageModelFeaturizer
         ],
         whitespace_tokenizer: WhitespaceTokenizer,
+        use_openvino: bool,
     ):
         """Tests the number of sub tokens when calling the function
         process training data"""
@@ -580,6 +594,7 @@ class TestSubTokensTrainAndProcess:
             model_weights,
             create_language_model_featurizer,
             whitespace_tokenizer,
+            use_openvino,
         )
         self.check_subtokens(
             texts, messages, expected_number_of_sub_tokens, whitespace_tokenizer
@@ -596,6 +611,7 @@ class TestSubTokensTrainAndProcess:
             [Dict[Text, Any]], LanguageModelFeaturizer
         ],
         whitespace_tokenizer: WhitespaceTokenizer,
+        use_openvino: bool,
     ):
         """Tests the number of sub tokens when calling the function
         process (messages)"""
@@ -605,6 +621,7 @@ class TestSubTokensTrainAndProcess:
             model_weights,
             create_language_model_featurizer,
             whitespace_tokenizer,
+            use_openvino,
         )
         self.check_subtokens(
             texts, messages, expected_number_of_sub_tokens, whitespace_tokenizer
