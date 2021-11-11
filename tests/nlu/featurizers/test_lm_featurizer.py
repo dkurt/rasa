@@ -328,7 +328,7 @@ class TestShapeValuesTrainAndProcess:
         expected_cls_vec: List[List[float]],
         use_openvino: bool,
     ):
-        messages = train_texts(texts, model_name, model_weights)
+        messages = train_texts(texts, model_name, model_weights, use_openvino)
         self.evaluate_message_shape_values(
             messages, expected_shape, expected_sequence_vec, expected_cls_vec
         )
@@ -518,7 +518,7 @@ class TestSubTokensTrainAndProcess:
         expected_number_of_sub_tokens: List[List[float]],
         use_openvino: bool,
     ):
-        messages = train_texts(texts, model_name, model_weights)
+        messages = train_texts(texts, model_name, model_weights, use_openvino)
         self.check_subtokens(texts, messages, expected_number_of_sub_tokens)
 
     def test_lm_featurizer_number_of_sub_tokens_process(
