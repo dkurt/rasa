@@ -1,5 +1,6 @@
 import sys
 import subprocess
+import logging
 
 from typing import Any, List, Text, Dict
 
@@ -8,6 +9,8 @@ import tensorflow as tf
 from openvino.inference_engine import IECore
 
 from transformers.file_utils import cached_path
+
+logger = logging.getLogger(__name__)
 
 
 class OpenVINOModel:
@@ -95,6 +98,7 @@ class OpenVINOModel:
             or self.exec_net is None
         ):
             # Use batch size 1 because we process batch sequently.
+            logger.info(f"Reshape model to 1x{input_ids.shape[1]}")
             self.net.reshape(
                 {
                     "input_ids": [1, input_ids.shape[1]],
