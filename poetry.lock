@@ -259,10 +259,14 @@ numpy = ">=1.15.0"
 [[package]]
 name = "boto3"
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = "1.20.8"
 =======
 version = "1.20.1"
 >>>>>>> Intel OpenVINO backend
+=======
+version = "1.20.8"
+>>>>>>> Convert TF models in runtime
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
@@ -270,10 +274,14 @@ python-versions = ">= 3.6"
 
 [package.dependencies]
 <<<<<<< HEAD
+<<<<<<< HEAD
 botocore = ">=1.23.8,<1.24.0"
 =======
 botocore = ">=1.23.1,<1.24.0"
 >>>>>>> Intel OpenVINO backend
+=======
+botocore = ">=1.23.8,<1.24.0"
+>>>>>>> Convert TF models in runtime
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -283,10 +291,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 [[package]]
 name = "botocore"
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = "1.23.8"
 =======
 version = "1.23.1"
 >>>>>>> Intel OpenVINO backend
+=======
+version = "1.23.8"
+>>>>>>> Convert TF models in runtime
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -547,6 +559,14 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "defusedxml"
+version = "0.7.1"
+description = "XML bomb protection for Python stdlib modules"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[[package]]
 name = "deprecated"
 version = "1.2.13"
 description = "Python @deprecated decorator to deprecate old python classes, functions or methods."
@@ -625,6 +645,27 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.extras]
 testing = ["pre-commit"]
+
+[[package]]
+name = "experimental-openvino-mo"
+version = "2021.4.1"
+description = ""
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+defusedxml = ">=0.7.1"
+networkx = ">=2.5,<3.0"
+numpy = ">=1.16.6,<1.20"
+
+[package.extras]
+caffe = ["networkx (>=2.5,<3.0)", "numpy (>=1.16.6,<1.20)", "protobuf (>=3.15.6)", "defusedxml (>=0.7.1)", "requests (>=2.25.1)"]
+kaldi = ["networkx (>=2.5,<3.0)", "numpy (>=1.16.6,<1.20)", "defusedxml (>=0.7.1)", "requests (>=2.25.1)"]
+mxnet = ["networkx (>=2.5,<3.0)", "numpy (>=1.16.6,<1.20)", "defusedxml (>=0.7.1)", "urllib3 (>=1.26.4)", "requests (>=2.25.1)", "mxnet (>=1.7.0.post2,<1.8.0)", "mxnet (>=1.2.0,<1.3.0)"]
+onnx = ["onnx (>=1.8.1)", "networkx (>=2.5,<3.0)", "numpy (>=1.16.6,<1.20)", "defusedxml (>=0.7.1)", "requests (>=2.25.1)"]
+tensorflow = ["tensorflow (>=1.15.5,<1.16.0)", "networkx (>=2.5,<3.0)", "numpy (>=1.16.6,<1.19)", "defusedxml (>=0.7.1)", "requests (>=2.25.1)"]
+tensorflow2 = ["tensorflow (>=2.4.1,<2.5.0)", "networkx (>=2.5,<3.0)", "numpy (>=1.16.6,<1.20)", "defusedxml (>=0.7.1)", "requests (>=2.25.1)"]
 
 [[package]]
 name = "fakeredis"
@@ -1353,10 +1394,14 @@ python-versions = ">=3.5"
 [[package]]
 name = "moto"
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = "2.2.15"
 =======
 version = "2.2.13"
 >>>>>>> Intel OpenVINO backend
+=======
+version = "2.2.15"
+>>>>>>> Convert TF models in runtime
 description = "A library that allows your python tests to easily mock out the boto library"
 category = "dev"
 optional = false
@@ -1378,7 +1423,6 @@ werkzeug = "*"
 xmltodict = "*"
 
 [package.extras]
-server = ["ecdsa (<0.15)", "PyYAML (>=5.1)", "python-jose[cryptography] (>=3.1.0,<4.0.0)", "docker (>=2.5.1)", "jsondiff (>=1.1.2)", "aws-xray-sdk (>=0.93,!=0.96)", "idna (>=2.5,<4)", "cfn-lint (>=0.4.0)", "sshpubkeys (>=3.1.0)", "setuptools", "flask", "flask-cors"]
 all = ["PyYAML (>=5.1)", "python-jose[cryptography] (>=3.1.0,<4.0.0)", "ecdsa (<0.15)", "docker (>=2.5.1)", "jsondiff (>=1.1.2)", "aws-xray-sdk (>=0.93,!=0.96)", "idna (>=2.5,<4)", "cfn-lint (>=0.4.0)", "sshpubkeys (>=3.1.0)", "setuptools"]
 apigateway = ["python-jose[cryptography] (>=3.1.0,<4.0.0)", "ecdsa (<0.15)"]
 awslambda = ["docker (>=2.5.1)"]
@@ -1392,6 +1436,7 @@ ec2 = ["sshpubkeys (>=3.1.0)"]
 efs = ["sshpubkeys (>=3.1.0)"]
 iotdata = ["jsondiff (>=1.1.2)"]
 s3 = ["PyYAML (>=5.1)"]
+server = ["PyYAML (>=5.1)", "python-jose[cryptography] (>=3.1.0,<4.0.0)", "ecdsa (<0.15)", "docker (>=2.5.1)", "jsondiff (>=1.1.2)", "aws-xray-sdk (>=0.93,!=0.96)", "idna (>=2.5,<4)", "cfn-lint (>=0.4.0)", "sshpubkeys (>=3.1.0)", "setuptools", "flask", "flask-cors"]
 ssm = ["PyYAML (>=5.1)", "dataclasses"]
 xray = ["aws-xray-sdk (>=0.93,!=0.96)", "setuptools"]
 
@@ -1620,7 +1665,7 @@ signedtoken = ["cryptography (>=3.0.0,<4)", "pyjwt (>=2.0.0,<3)"]
 
 [[package]]
 name = "openvino"
-version = "2021.4.1"
+version = "2021.4.2"
 description = "Inference Engine Python* API"
 category = "main"
 optional = false
@@ -1968,10 +2013,14 @@ zstd = ["zstandard"]
 [[package]]
 name = "pyparsing"
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = "3.0.6"
 =======
 version = "3.0.5"
 >>>>>>> Intel OpenVINO backend
+=======
+version = "3.0.6"
+>>>>>>> Convert TF models in runtime
 description = "Python parsing module"
 category = "main"
 optional = false
@@ -3170,10 +3219,14 @@ python-versions = "*"
 [[package]]
 name = "types-requests"
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = "2.26.0"
 =======
 version = "2.25.12"
 >>>>>>> Intel OpenVINO backend
+=======
+version = "2.26.0"
+>>>>>>> Convert TF models in runtime
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
@@ -3366,10 +3419,14 @@ transformers = ["transformers"]
 lock-version = "1.1"
 python-versions = ">=3.7,<3.9"
 <<<<<<< HEAD
+<<<<<<< HEAD
 content-hash = "06d7f2eb49d9417419104a8a4f644c9a99dd1e5af8165e80fb4a103a6b431305"
 =======
 content-hash = "81b847df2300bc84ef5021e2e1fd1fd445d74fc863c2b72af94d49bb86ce3576"
 >>>>>>> Intel OpenVINO backend
+=======
+content-hash = "799ddb434416b763fe57af85f4046dff9fa94507661b897b3f172c7000095c49"
+>>>>>>> Convert TF models in runtime
 
 [metadata.files]
 absl-py = [
@@ -3503,6 +3560,7 @@ blis = [
 ]
 boto3 = [
 <<<<<<< HEAD
+<<<<<<< HEAD
     {file = "boto3-1.20.8-py3-none-any.whl", hash = "sha256:c0ac23cc36dc484edd1edd28903b5712cb07507af1ae19b2e8d6db176416d9e2"},
     {file = "boto3-1.20.8.tar.gz", hash = "sha256:81ebdcabc534a52e2b7a2bfcbe1a1d7f1e34f028f7fe1cb16ccd80e34cea867a"},
 ]
@@ -3517,6 +3575,14 @@ botocore = [
     {file = "botocore-1.23.1-py3-none-any.whl", hash = "sha256:ae6c29083a5c1bddf2a2d89e3dae1a2cafb1601c95f28a2ec30109ffe2c99343"},
     {file = "botocore-1.23.1.tar.gz", hash = "sha256:3daa7148017685ee8120c12b024ad2b6eadc1abc775627d4f4dd8182aaca5d0f"},
 >>>>>>> Intel OpenVINO backend
+=======
+    {file = "boto3-1.20.8-py3-none-any.whl", hash = "sha256:c0ac23cc36dc484edd1edd28903b5712cb07507af1ae19b2e8d6db176416d9e2"},
+    {file = "boto3-1.20.8.tar.gz", hash = "sha256:81ebdcabc534a52e2b7a2bfcbe1a1d7f1e34f028f7fe1cb16ccd80e34cea867a"},
+]
+botocore = [
+    {file = "botocore-1.23.8-py3-none-any.whl", hash = "sha256:a0c7cfea155a0202ab197a016736dd4e6a26f9e416bdd9cdd2c9a3fb88ffa5a8"},
+    {file = "botocore-1.23.8.tar.gz", hash = "sha256:ae4ed9666199020a9e53c3d3efc0a7d417315cd2313b70cb013282afe70ac358"},
+>>>>>>> Convert TF models in runtime
 ]
 cachecontrol = [
     {file = "CacheControl-0.12.10-py2.py3-none-any.whl", hash = "sha256:b0d43d8f71948ef5ebdee5fe236b86c6ffc7799370453dccb0e894c20dfa487c"},
@@ -3732,6 +3798,10 @@ decorator = [
     {file = "decorator-5.1.0-py3-none-any.whl", hash = "sha256:7b12e7c3c6ab203a29e157335e9122cb03de9ab7264b137594103fd4a683b374"},
     {file = "decorator-5.1.0.tar.gz", hash = "sha256:e59913af105b9860aa2c8d3272d9de5a56a4e608db9a2f167a8480b323d529a7"},
 ]
+defusedxml = [
+    {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
+    {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
+]
 deprecated = [
     {file = "Deprecated-1.2.13-py2.py3-none-any.whl", hash = "sha256:64756e3e14c8c5eea9795d93c524551432a0be75629f8f29e67ab8caf076c76d"},
     {file = "Deprecated-1.2.13.tar.gz", hash = "sha256:43ac5335da90c31c24ba028af536a91d41d53f9e6901ddb021bcc572ce44e38d"},
@@ -3773,6 +3843,9 @@ docspec-python = [
 execnet = [
     {file = "execnet-1.9.0-py2.py3-none-any.whl", hash = "sha256:a295f7cc774947aac58dde7fdc85f4aa00c42adf5d8f5468fc630c1acf30a142"},
     {file = "execnet-1.9.0.tar.gz", hash = "sha256:8f694f3ba9cc92cab508b152dcfe322153975c29bda272e2fd7f3f00f36e47c5"},
+]
+experimental-openvino-mo = [
+    {file = "experimental_openvino_mo-2021.4.1-py3-none-any.whl", hash = "sha256:20eac78078ea7144c8912d6a839249e66527842ee1ade9a5f1bea3e1850dc31d"},
 ]
 fakeredis = [
     {file = "fakeredis-1.6.1-py3-none-any.whl", hash = "sha256:5eb1516f1fe1813e9da8f6c482178fc067af09f53de587ae03887ef5d9d13024"},
@@ -4284,12 +4357,17 @@ more-itertools = [
 ]
 moto = [
 <<<<<<< HEAD
+<<<<<<< HEAD
     {file = "moto-2.2.15-py2.py3-none-any.whl", hash = "sha256:5f743a8fa312b57d6ad72a17c134cf81a21e7d7cd2e602c5062d352390114af2"},
     {file = "moto-2.2.15.tar.gz", hash = "sha256:c5692058863803d8a17e422cea48f6f745895760a4be05cd479c0b481cc8e3b0"},
 =======
     {file = "moto-2.2.13-py2.py3-none-any.whl", hash = "sha256:ffc0153632adf5363fa6fd40f4244994dfa223019b2e5c08921e02ad89422e4f"},
     {file = "moto-2.2.13.tar.gz", hash = "sha256:ad4d0f1fbe9a7ff91246308079c578a45e3e1315aedf7db1c2cae5d3f2211718"},
 >>>>>>> Intel OpenVINO backend
+=======
+    {file = "moto-2.2.15-py2.py3-none-any.whl", hash = "sha256:5f743a8fa312b57d6ad72a17c134cf81a21e7d7cd2e602c5062d352390114af2"},
+    {file = "moto-2.2.15.tar.gz", hash = "sha256:c5692058863803d8a17e422cea48f6f745895760a4be05cd479c0b481cc8e3b0"},
+>>>>>>> Convert TF models in runtime
 ]
 msgpack = [
     {file = "msgpack-1.0.2-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:b6d9e2dae081aa35c44af9c4298de4ee72991305503442a5c74656d82b581fe9"},
@@ -4530,18 +4608,18 @@ oauthlib = [
     {file = "oauthlib-3.1.1.tar.gz", hash = "sha256:8f0215fcc533dd8dd1bee6f4c412d4f0cd7297307d43ac61666389e3bc3198a3"},
 ]
 openvino = [
-    {file = "openvino-2021.4.1-3926-cp36-cp36m-macosx_10_15_x86_64.whl", hash = "sha256:ede3694b9a3090d38d2a566ec01f27a3c169b655cfb8b3b327f437cd84435428"},
-    {file = "openvino-2021.4.1-3926-cp36-cp36m-manylinux2014_x86_64.whl", hash = "sha256:52889095ba868441164701df0236ea5d62dedb1ad40ab5454abb1f8105886796"},
-    {file = "openvino-2021.4.1-3926-cp36-cp36m-win_amd64.whl", hash = "sha256:268930b35e6dce3c6496d793b5434bc88fa3e1b280734695a54c97b4bd819524"},
-    {file = "openvino-2021.4.1-3926-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:6d82fa3a5851b90af4a634f86ea641ede0c618963742c95ea8b92477d283c2e0"},
-    {file = "openvino-2021.4.1-3926-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:4583fc6a36e0d1a1a16d3a3388d972757556852510e0e9b5a45bc22b5814f408"},
-    {file = "openvino-2021.4.1-3926-cp37-cp37m-win_amd64.whl", hash = "sha256:2fd69b8756cb1cba9dac1ff7f300d0d1e6b4376076b9e79e9f965a85f94df235"},
-    {file = "openvino-2021.4.1-3926-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:fff9e7f8e5eb8738fa553fb2c140d007b7578a0c7646ea129d5510451e590f2a"},
-    {file = "openvino-2021.4.1-3926-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:b80f57d588e822e6a699f66ee84e3fbc8baac3588113a1f838f8adc20fb5b7e7"},
-    {file = "openvino-2021.4.1-3926-cp38-cp38-win_amd64.whl", hash = "sha256:04f296816656f385f71e0a180b81b3bfbe5fe76062c36ae61bd2a6317d8f7296"},
-    {file = "openvino-2021.4.1-3926-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:be4eaac2dce2c763d48174321e170feee51ca50dca1a87e3fe21dd0d4bee77dd"},
-    {file = "openvino-2021.4.1-3926-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:a9d803d37ef40ae2a25b5788689be7eb6b18affb841ad7e4409b24eadaad20a3"},
-    {file = "openvino-2021.4.1-3926-cp39-cp39-win_amd64.whl", hash = "sha256:84ae47ae248c0c3f4ba7fee053bd0bb0d4e165adff0bef97c44031a0c455408e"},
+    {file = "openvino-2021.4.2-3976-cp36-cp36m-macosx_10_15_x86_64.whl", hash = "sha256:86f182e38a727e66ed5ccaad97a185061ff1e1bed255f0405b5a5b3d34dd534d"},
+    {file = "openvino-2021.4.2-3976-cp36-cp36m-manylinux2014_x86_64.whl", hash = "sha256:a989c1203bfca9e62018d30309285c3aeb162542717d1dda2898bcb91799363d"},
+    {file = "openvino-2021.4.2-3976-cp36-cp36m-win_amd64.whl", hash = "sha256:935b520cb0cedf48ff6f6c7d58e3b89ab0450e529ffb7887fcec59ec6589693c"},
+    {file = "openvino-2021.4.2-3976-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:291b20b47cd3a08696af7f5777bf8db13b2b94c6a49e16b6bf41b3bc7a1fabe6"},
+    {file = "openvino-2021.4.2-3976-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:e825820394719e5afcb9ab9155fc4150fc094a4065b5cb49e1a5837e14c7148c"},
+    {file = "openvino-2021.4.2-3976-cp37-cp37m-win_amd64.whl", hash = "sha256:e45c7fd3dfed61a355091eef0d031de0c2eac237d64335c602ff311a8bf81a48"},
+    {file = "openvino-2021.4.2-3976-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:45167e4af7a8d8e8b8a10318bf3ca11a79861d5f044d2d7662be39f30ff7815d"},
+    {file = "openvino-2021.4.2-3976-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:a6b23cabfcd743a5e4bd3bd3d0dfb7c38a4894fdde0ca21d2aba3f52b9106345"},
+    {file = "openvino-2021.4.2-3976-cp38-cp38-win_amd64.whl", hash = "sha256:58fd570d6d0a72adb8871bd14a7d653eb471d92f43988f934b58397232e24f9d"},
+    {file = "openvino-2021.4.2-3976-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:74b9f7f5d834b15348bc96d450ddd4bc53e22333979d0d0bac7dcdc819703026"},
+    {file = "openvino-2021.4.2-3976-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:2260ac472b2834d520789dd29e15eaeeae62eba8c1867159efbda82940d2012f"},
+    {file = "openvino-2021.4.2-3976-cp39-cp39-win_amd64.whl", hash = "sha256:5640eab0152a567ae3cbfab393227479ef936153399e25dea04cd96c817d1dd4"},
 ]
 opt-einsum = [
     {file = "opt_einsum-3.3.0-py3-none-any.whl", hash = "sha256:2455e59e3947d3c275477df7f5205b30635e266fe6dc300e3d9f9646bfcea147"},
@@ -4703,6 +4781,9 @@ psutil = [
 ]
 psycopg2-binary = [
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Convert TF models in runtime
     {file = "psycopg2-binary-2.9.2.tar.gz", hash = "sha256:234b1f48488b2f86aac04fb00cb04e5e9bcb960f34fa8a8e41b73149d581a93b"},
     {file = "psycopg2_binary-2.9.2-cp310-cp310-macosx_10_14_x86_64.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:c0e1fb7097ded2cc44d9037cfc68ad86a30341261492e7de95d180e534969fb2"},
     {file = "psycopg2_binary-2.9.2-cp310-cp310-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:717525cdc97b23182ff6f470fb5bf6f0bc796b5a7000c6f6699d6679991e4a5e"},
@@ -4739,6 +4820,7 @@ psycopg2-binary = [
     {file = "psycopg2_binary-2.9.2-cp39-cp39-manylinux_2_24_ppc64le.whl", hash = "sha256:7585ca73dcfe326f31fafa8f96e6bb98ea9e9e46c7a1924ec8101d797914ae27"},
     {file = "psycopg2_binary-2.9.2-cp39-cp39-win32.whl", hash = "sha256:9c0aaad07941419926b9bd00171e49fe6b06e42e5527fb91671e137fe6c93d77"},
     {file = "psycopg2_binary-2.9.2-cp39-cp39-win_amd64.whl", hash = "sha256:aa2847d8073951dbc84c4f8b32c620764db3c2eb0d99a04835fecfab7d04816e"},
+<<<<<<< HEAD
 =======
     {file = "psycopg2-binary-2.9.1.tar.gz", hash = "sha256:b0221ca5a9837e040ebf61f48899926b5783668b7807419e4adae8175a31f773"},
     {file = "psycopg2_binary-2.9.1-cp36-cp36m-macosx_10_14_x86_64.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:c250a7ec489b652c892e4f0a5d122cc14c3780f9f643e1a326754aedf82d9a76"},
@@ -4770,6 +4852,8 @@ psycopg2-binary = [
     {file = "psycopg2_binary-2.9.1-cp39-cp39-win32.whl", hash = "sha256:0b7dae87f0b729922e06f85f667de7bf16455d411971b2043bbd9577af9d1975"},
     {file = "psycopg2_binary-2.9.1-cp39-cp39-win_amd64.whl", hash = "sha256:b4d7679a08fea64573c969f6994a2631908bb2c0e69a7235648642f3d2e39a68"},
 >>>>>>> Intel OpenVINO backend
+=======
+>>>>>>> Convert TF models in runtime
 ]
 py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
@@ -4921,12 +5005,17 @@ pymongo = [
 ]
 pyparsing = [
 <<<<<<< HEAD
+<<<<<<< HEAD
     {file = "pyparsing-3.0.6-py3-none-any.whl", hash = "sha256:04ff808a5b90911829c55c4e26f75fa5ca8a2f5f36aa3a51f68e27033341d3e4"},
     {file = "pyparsing-3.0.6.tar.gz", hash = "sha256:d9bdec0013ef1eb5a84ab39a3b3868911598afa494f5faa038647101504e2b81"},
 =======
     {file = "pyparsing-3.0.5-py3-none-any.whl", hash = "sha256:4881e3d2979f27b41a3a2421b10be9cbfa7ce2baa6c7117952222f8bbea6650c"},
     {file = "pyparsing-3.0.5.tar.gz", hash = "sha256:9329d1c1b51f0f76371c4ded42c5ec4cc0be18456b22193e0570c2da98ed288b"},
 >>>>>>> Intel OpenVINO backend
+=======
+    {file = "pyparsing-3.0.6-py3-none-any.whl", hash = "sha256:04ff808a5b90911829c55c4e26f75fa5ca8a2f5f36aa3a51f68e27033341d3e4"},
+    {file = "pyparsing-3.0.6.tar.gz", hash = "sha256:d9bdec0013ef1eb5a84ab39a3b3868911598afa494f5faa038647101504e2b81"},
+>>>>>>> Convert TF models in runtime
 ]
 pyreadline = [
     {file = "pyreadline-2.1.win-amd64.exe", hash = "sha256:9ce5fa65b8992dfa373bddc5b6e0864ead8f291c94fbfec05fbd5c836162e67b"},
@@ -5638,12 +5727,17 @@ types-pytz = [
 ]
 types-requests = [
 <<<<<<< HEAD
+<<<<<<< HEAD
     {file = "types-requests-2.26.0.tar.gz", hash = "sha256:df5ec8c34b413a42ebb38e4f96bdeb68090b875bdfcc5138dc82989c95445883"},
     {file = "types_requests-2.26.0-py3-none-any.whl", hash = "sha256:809b5dcd3c408ac39d11d593835b6aff32420b3e7ddb79c7f3e823330f040466"},
 =======
     {file = "types-requests-2.25.12.tar.gz", hash = "sha256:055863c0aacf8f8f29cd2ca0d3320efdf39f28e71de68d327761751d2f62bb57"},
     {file = "types_requests-2.25.12-py3-none-any.whl", hash = "sha256:441a0e5671a3813e69e39ae2369d8f45558dcb96eff0bac148806e4799304f3f"},
 >>>>>>> Intel OpenVINO backend
+=======
+    {file = "types-requests-2.26.0.tar.gz", hash = "sha256:df5ec8c34b413a42ebb38e4f96bdeb68090b875bdfcc5138dc82989c95445883"},
+    {file = "types_requests-2.26.0-py3-none-any.whl", hash = "sha256:809b5dcd3c408ac39d11d593835b6aff32420b3e7ddb79c7f3e823330f040466"},
+>>>>>>> Convert TF models in runtime
 ]
 types-setuptools = [
     {file = "types-setuptools-57.4.2.tar.gz", hash = "sha256:5499a0f429281d1a3aa9494c79b6599ab356dfe6d393825426bc749e48ea1bf8"},

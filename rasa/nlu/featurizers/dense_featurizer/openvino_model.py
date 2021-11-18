@@ -1,4 +1,6 @@
+import os
 import sys
+import shutil
 import subprocess
 import logging
 
@@ -8,9 +10,11 @@ import numpy as np
 import tensorflow as tf
 from openvino.inference_engine import IECore
 
-from transformers.file_utils import cached_path
+from transformers.file_utils import hf_bucket_url, cached_path
 
 logger = logging.getLogger(__name__)
+
+ie = IECore()
 
 
 class OpenVINOModel:
@@ -23,11 +27,13 @@ class OpenVINOModel:
         def numpy(self) -> np.ndarray:
             return self.value
 
-    def __init__(self, model_name: Text, config: Dict, model: Any = None) -> None:
+    def __init__(
+        self, model: Any, config: Dict, model_name: Text, cache_dir: Text
+    ) -> None:
         """Instantiates a new OpenVINO optimized model."""
         self.model = model
-        self.model_name = model_name.replace("/", "_")
-        self.ie = IECore()
+        self.model_name = model_name
+        self.cache_dir = cache_dir
         self.net = None
         self.exec_net = None
         self.out_name = ""
@@ -37,16 +43,24 @@ class OpenVINOModel:
         # output will match.
         self.max_length = config.get("openvino_max_length", 0)
 
-        url = "https://huggingface.co/dkurt/openvino/resolve/main/" + self.model_name
-        xml_path = cached_path(url + ".xml")
-        bin_path = cached_path(url + ".bin")
-        if xml_path is not None and bin_path is not None:
-            import shutil
-
-            shutil.copyfile(xml_path, xml_path + ".xml")
-            self.net = self.ie.read_network(xml_path + ".xml", bin_path)
-
     def _load_model(self, input_ids: np.ndarray, attention_mask: np.ndarray) -> None:
+        # Check that model is in cache already
+        url = hf_bucket_url(self.model_name, filename="tf_model.h5")
+        path = cached_path(url, cache_dir=self.cache_dir)
+
+        xml_path = path + ".xml"
+        bin_path = path + ".bin"
+        if not os.path.exists(xml_path) or not os.path.exists(bin_path):
+            self._convert_model(path, input_ids, attention_mask)
+
+        # Load model into memory
+        self.net = ie.read_network(xml_path)
+
+    def _convert_model(
+        self, tf_weights_path: Text, input_ids: np.ndarray, attention_mask: np.ndarray
+    ) -> None:
+        cache_dir = os.path.dirname(tf_weights_path)
+
         # Serialize a Keras model
         @tf.function(
             input_signature=[
@@ -64,7 +78,8 @@ class OpenVINOModel:
             output = self.model.call(inputs)
             return output[0]
 
-        self.model.save("keras_model", signatures=serving)
+        saved_model_dir = os.path.join(cache_dir, "keras_model")
+        self.model.save(saved_model_dir, signatures=serving)
 
         # Convert to OpenVINO IR
         proc = subprocess.Popen(
@@ -72,14 +87,18 @@ class OpenVINOModel:
                 sys.executable,
                 "-m",
                 "mo",
-                "--saved_model_dir=keras_model",
+                "--output_dir",
+                cache_dir,
+                "--saved_model_dir",
+                saved_model_dir,
                 "--model_name",
-                self.model_name,
+                os.path.basename(tf_weights_path),
                 "--input",
                 "input_ids,attention_mask",
                 "--input_shape",
-                "{},{}".format(input_ids.shape, attention_mask.shape),
+                "{},{}".format([1, input_ids.shape[1]], [1, attention_mask.shape[1]]),
                 "--disable_nhwc_to_nchw",
+                "--static_shape",
                 "--data_type=FP16",
             ],
             stdout=subprocess.PIPE,
@@ -87,8 +106,7 @@ class OpenVINOModel:
         )
         proc.communicate()
 
-        # Load model into memory
-        self.net = self.ie.read_network(self.model_name + ".xml")
+        shutil.rmtree(saved_model_dir)
 
     def _init_model(self, input_ids: np.ndarray, attention_mask: np.ndarray) -> None:
         # Reshape model in case of different input shape (batch is computed sequently)
@@ -109,7 +127,7 @@ class OpenVINOModel:
 
         if self.exec_net is None:
             self.out_name = next(iter(self.net.outputs.keys()))
-            self.exec_net = self.ie.load_network(self.net, "CPU")
+            self.exec_net = ie.load_network(self.net, "CPU")
 
     def _process_data(self, ids: np.ndarray, mask: np.ndarray) -> np.ndarray:
         # In case of batching, we process samples one by one instead of
