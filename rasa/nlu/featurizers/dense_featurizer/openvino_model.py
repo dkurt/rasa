@@ -8,6 +8,7 @@ from typing import Any, List, Text, Dict
 
 import numpy as np
 import tensorflow as tf
+from tensorflow.python.framework.convert_to_constants import convert_variables_to_constants_v2
 from openvino.inference_engine import IECore
 
 from transformers.file_utils import hf_bucket_url, cached_path
@@ -76,25 +77,15 @@ class OpenVINOModel:
     ) -> None:
         cache_dir = os.path.dirname(tf_weights_path)
 
-        # Serialize a Keras model
-        @tf.function(
-            input_signature=[
-                {
-                    "input_ids": tf.TensorSpec(
-                        (None, None), tf.int32, name="input_ids"
-                    ),
-                    "attention_mask": tf.TensorSpec(
-                        (None, None), tf.int32, name="attention_mask"
-                    ),
-                }
-            ]
-        )
-        def serving(inputs: List[tf.TensorSpec]) -> tf.TensorSpec:
-            output = self.model.call(inputs)
-            return output[0]
+        func = tf.function(lambda input_ids, attention_mask: self.model(input_ids, attention_mask=attention_mask))
+        func = func.get_concrete_function(input_ids=tf.TensorSpec((None, None), tf.int32, name="input_ids"),
+                                          attention_mask=tf.TensorSpec((None, None), tf.int32, name="attention_mask"))
+        frozen_func = convert_variables_to_constants_v2(func)
+        graph_def = frozen_func.graph.as_graph_def()
 
-        saved_model_dir = os.path.join(cache_dir, "keras_model")
-        self.model.save(saved_model_dir, signatures=serving)
+        pb_model_path = os.path.join(cache_dir, "frozen_graph.pb")
+        with tf.io.gfile.GFile(pb_model_path, 'wb') as f:
+            f.write(graph_def.SerializeToString())
 
         # Convert to OpenVINO IR
         subprocess.run(
@@ -104,8 +95,8 @@ class OpenVINOModel:
                 "mo",
                 "--output_dir",
                 cache_dir,
-                "--saved_model_dir",
-                saved_model_dir,
+                "--input_model",
+                pb_model_path,
                 "--model_name",
                 os.path.basename(tf_weights_path),
                 "--input",
@@ -119,7 +110,7 @@ class OpenVINOModel:
             check=False,
         )
 
-        shutil.rmtree(saved_model_dir)
+        os.remove(pb_model_path)
 
     def _init_model(self, input_ids: np.ndarray, attention_mask: np.ndarray) -> None:
         # Reshape model in case of different input shape (batch is computed sequently)
