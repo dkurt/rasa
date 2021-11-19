@@ -260,6 +260,7 @@ numpy = ">=1.15.0"
 name = "boto3"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = "1.20.8"
 =======
 version = "1.20.1"
@@ -267,12 +268,16 @@ version = "1.20.1"
 =======
 version = "1.20.8"
 >>>>>>> Convert TF models in runtime
+=======
+version = "1.20.9"
+>>>>>>> Skip failed models conversion
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 botocore = ">=1.23.8,<1.24.0"
@@ -282,6 +287,9 @@ botocore = ">=1.23.1,<1.24.0"
 =======
 botocore = ">=1.23.8,<1.24.0"
 >>>>>>> Convert TF models in runtime
+=======
+botocore = ">=1.23.9,<1.24.0"
+>>>>>>> Skip failed models conversion
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -292,6 +300,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 name = "botocore"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = "1.23.8"
 =======
 version = "1.23.1"
@@ -299,6 +308,9 @@ version = "1.23.1"
 =======
 version = "1.23.8"
 >>>>>>> Convert TF models in runtime
+=======
+version = "1.23.9"
+>>>>>>> Skip failed models conversion
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -648,7 +660,7 @@ testing = ["pre-commit"]
 
 [[package]]
 name = "experimental-openvino-mo"
-version = "2021.4.1"
+version = "2021.4.2"
 description = ""
 category = "main"
 optional = false
@@ -3420,6 +3432,7 @@ lock-version = "1.1"
 python-versions = ">=3.7,<3.9"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 content-hash = "06d7f2eb49d9417419104a8a4f644c9a99dd1e5af8165e80fb4a103a6b431305"
 =======
 content-hash = "81b847df2300bc84ef5021e2e1fd1fd445d74fc863c2b72af94d49bb86ce3576"
@@ -3427,6 +3440,9 @@ content-hash = "81b847df2300bc84ef5021e2e1fd1fd445d74fc863c2b72af94d49bb86ce3576
 =======
 content-hash = "799ddb434416b763fe57af85f4046dff9fa94507661b897b3f172c7000095c49"
 >>>>>>> Convert TF models in runtime
+=======
+content-hash = "fee04f1fbda2f8bbe7f6517c91b1cb085eeb0069331b6650785d41c0665bc178"
+>>>>>>> Skip failed models conversion
 
 [metadata.files]
 absl-py = [
@@ -3561,6 +3577,7 @@ blis = [
 boto3 = [
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     {file = "boto3-1.20.8-py3-none-any.whl", hash = "sha256:c0ac23cc36dc484edd1edd28903b5712cb07507af1ae19b2e8d6db176416d9e2"},
     {file = "boto3-1.20.8.tar.gz", hash = "sha256:81ebdcabc534a52e2b7a2bfcbe1a1d7f1e34f028f7fe1cb16ccd80e34cea867a"},
 ]
@@ -3583,6 +3600,14 @@ botocore = [
     {file = "botocore-1.23.8-py3-none-any.whl", hash = "sha256:a0c7cfea155a0202ab197a016736dd4e6a26f9e416bdd9cdd2c9a3fb88ffa5a8"},
     {file = "botocore-1.23.8.tar.gz", hash = "sha256:ae4ed9666199020a9e53c3d3efc0a7d417315cd2313b70cb013282afe70ac358"},
 >>>>>>> Convert TF models in runtime
+=======
+    {file = "boto3-1.20.9-py3-none-any.whl", hash = "sha256:6608387b5f744e5e7db61c4f2746c3769ee909a605a5bd8ea5c949c001b6fb55"},
+    {file = "boto3-1.20.9.tar.gz", hash = "sha256:70a735d7c0a68b6d04065bd06ee3d1972b2bc4203f87719eaf462347e847768f"},
+]
+botocore = [
+    {file = "botocore-1.23.9-py3-none-any.whl", hash = "sha256:e36c5831c971150777845519a3c5dbb2e924e54ac4cc7126b1360129f0512d8a"},
+    {file = "botocore-1.23.9.tar.gz", hash = "sha256:810e259776bdc233c60333ff9d5f4d14b48ca5adefb9198d5ac8410c1d90efc4"},
+>>>>>>> Skip failed models conversion
 ]
 cachecontrol = [
     {file = "CacheControl-0.12.10-py2.py3-none-any.whl", hash = "sha256:b0d43d8f71948ef5ebdee5fe236b86c6ffc7799370453dccb0e894c20dfa487c"},
@@ -3845,7 +3870,8 @@ execnet = [
     {file = "execnet-1.9.0.tar.gz", hash = "sha256:8f694f3ba9cc92cab508b152dcfe322153975c29bda272e2fd7f3f00f36e47c5"},
 ]
 experimental-openvino-mo = [
-    {file = "experimental_openvino_mo-2021.4.1-py3-none-any.whl", hash = "sha256:20eac78078ea7144c8912d6a839249e66527842ee1ade9a5f1bea3e1850dc31d"},
+    {file = "experimental-openvino-mo-2021.4.2.tar.gz", hash = "sha256:0856fc56eac8a733d01ca12348cd9cd838d97e8408f967151a5bda3c51fe5244"},
+    {file = "experimental_openvino_mo-2021.4.2-py3-none-any.whl", hash = "sha256:9f932d90178cc97ccc462a40bcaf2626814333e266975f87803936a475c09d4f"},
 ]
 fakeredis = [
     {file = "fakeredis-1.6.1-py3-none-any.whl", hash = "sha256:5eb1516f1fe1813e9da8f6c482178fc067af09f53de587ae03887ef5d9d13024"},
