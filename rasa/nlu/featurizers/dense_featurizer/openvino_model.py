@@ -21,6 +21,7 @@ ie = IECore()
 # Model Optimizer once again because it might stuck CI for a long time.
 failed_models = []
 
+
 class OpenVINOModel:
     """A class that optimizes HuggingFace networks using Intel OpenVINO."""
 
@@ -112,6 +113,7 @@ class OpenVINOModel:
                 "--input_shape",
                 "{},{}".format([1, input_ids.shape[1]], [1, attention_mask.shape[1]]),
                 "--disable_nhwc_to_nchw",
+                "--static_shape",
                 "--data_type=FP16",
             ],
             check=False,
