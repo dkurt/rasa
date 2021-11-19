@@ -113,8 +113,8 @@ class OpenVINOModel:
                 "--input_shape",
                 "{},{}".format([1, input_ids.shape[1]], [1, attention_mask.shape[1]]),
                 "--disable_nhwc_to_nchw",
-                "--static_shape",
-                "--data_type=FP16",
+                "--data_type",
+                "FP32" if self.model_name == "distilbert-base-uncased" else "FP16",
             ],
             check=False,
         )
