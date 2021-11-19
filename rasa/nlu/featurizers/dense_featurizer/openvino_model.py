@@ -16,6 +16,10 @@ logger = logging.getLogger(__name__)
 
 ie = IECore()
 
+# This is a global list of models with failed conversion.
+# If model conversion failed before we won't call
+# Model Optimizer once again because it might stuck CI for a long time.
+failed_models = []
 
 class OpenVINOModel:
     """A class that optimizes HuggingFace networks using Intel OpenVINO."""
@@ -44,6 +48,9 @@ class OpenVINOModel:
         self.max_length = config.get("openvino_max_length", 0)
 
     def _load_model(self, input_ids: np.ndarray, attention_mask: np.ndarray) -> None:
+        if self.model_name in failed_models:
+            raise Exception("Model conversion failed before")
+
         # Check that model is in cache already
         url = hf_bucket_url(self.model_name, filename="tf_model.h5")
         path = cached_path(url, cache_dir=self.cache_dir)
@@ -51,7 +58,14 @@ class OpenVINOModel:
         xml_path = path + ".xml"
         bin_path = path + ".bin"
         if not os.path.exists(xml_path) or not os.path.exists(bin_path):
-            self._convert_model(path, input_ids, attention_mask)
+            try:
+                self._convert_model(path, input_ids, attention_mask)
+            except Exception as e:
+                logger.error(str(e))
+
+            if not os.path.exists(xml_path):
+                failed_models.append(self.model_name)
+                raise Exception("Model conversion failed")
 
         # Load model into memory
         self.net = ie.read_network(xml_path)
@@ -82,7 +96,7 @@ class OpenVINOModel:
         self.model.save(saved_model_dir, signatures=serving)
 
         # Convert to OpenVINO IR
-        proc = subprocess.Popen(
+        subprocess.run(
             [
                 sys.executable,
                 "-m",
@@ -98,13 +112,10 @@ class OpenVINOModel:
                 "--input_shape",
                 "{},{}".format([1, input_ids.shape[1]], [1, attention_mask.shape[1]]),
                 "--disable_nhwc_to_nchw",
-                "--static_shape",
                 "--data_type=FP16",
             ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            check=False,
         )
-        proc.communicate()
 
         shutil.rmtree(saved_model_dir)
 
