@@ -48,11 +48,11 @@ def skip_on_CI(model_name: Text, model_weights: Text, use_openvino: bool) -> boo
     Only applies when skip_model_load=False
     """
     # First check if CI
-    return (
-        bool(os.environ.get("CI"))
-        or (use_openvino and model_weights != "distilbert-base-uncased") or
-        (model_name == "bert"
-        and (not model_weights or model_weights == "rasa/LaBSE"))
+    return bool(os.environ.get("CI")) and (
+        use_openvino
+        and model_weights != "distilbert-base-uncased"
+        or model_name == "bert"
+        and (not model_weights or model_weights == "rasa/LaBSE")
     )
 
 
@@ -357,7 +357,7 @@ class TestShapeValuesTrainAndProcess:
             assert intent_sequence_vec is None
             assert intent_sentence_vec is None
 
-    @pytest.mark.timeout(240, func_only=True)
+    @pytest.mark.timeout(120, func_only=True)
     def test_lm_featurizer_shapes_in_process_training_data(
         self,
         model_name: Text,
@@ -384,7 +384,7 @@ class TestShapeValuesTrainAndProcess:
             messages, expected_shape, expected_sequence_vec, expected_cls_vec
         )
 
-    @pytest.mark.timeout(240, func_only=True)
+    @pytest.mark.timeout(120, func_only=True)
     def test_lm_featurizer_shapes_in_process_messages(
         self,
         model_name: Text,
@@ -574,7 +574,7 @@ class TestSubTokensTrainAndProcess:
                 whitespace_tokenizer.tokenize(Message.build(text=texts[index]), TEXT)
             )
 
-    @pytest.mark.timeout(240, func_only=True)
+    @pytest.mark.timeout(120, func_only=True)
     def test_lm_featurizer_num_sub_tokens_process_training_data(
         self,
         model_name: Text,
@@ -601,7 +601,7 @@ class TestSubTokensTrainAndProcess:
             texts, messages, expected_number_of_sub_tokens, whitespace_tokenizer
         )
 
-    @pytest.mark.timeout(240, func_only=True)
+    @pytest.mark.timeout(120, func_only=True)
     def test_lm_featurizer_num_sub_tokens_process_messages(
         self,
         model_name: Text,
