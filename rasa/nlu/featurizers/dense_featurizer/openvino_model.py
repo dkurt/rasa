@@ -1,6 +1,5 @@
 import os
 import sys
-import shutil
 import subprocess
 import logging
 
@@ -8,7 +7,9 @@ from typing import Any, List, Text, Dict
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.python.framework.convert_to_constants import convert_variables_to_constants_v2
+from tensorflow.python.framework.convert_to_constants import (
+    convert_variables_to_constants_v2,
+)
 from openvino.inference_engine import IECore
 
 from transformers.file_utils import hf_bucket_url, cached_path
@@ -77,14 +78,20 @@ class OpenVINOModel:
     ) -> None:
         cache_dir = os.path.dirname(tf_weights_path)
 
-        func = tf.function(lambda input_ids, attention_mask: self.model(input_ids, attention_mask=attention_mask))
-        func = func.get_concrete_function(input_ids=tf.TensorSpec((None, None), tf.int32, name="input_ids"),
-                                          attention_mask=tf.TensorSpec((None, None), tf.int32, name="attention_mask"))
+        func = tf.function(
+            lambda input_ids, attention_mask: self.model(
+                input_ids, attention_mask=attention_mask
+            )
+        )
+        func = func.get_concrete_function(
+            input_ids=tf.TensorSpec((None, None), tf.int32, name="input_ids"),
+            attention_mask=tf.TensorSpec((None, None), tf.int32, name="attention_mask"),
+        )
         frozen_func = convert_variables_to_constants_v2(func)
         graph_def = frozen_func.graph.as_graph_def()
 
         pb_model_path = os.path.join(cache_dir, "frozen_graph.pb")
-        with tf.io.gfile.GFile(pb_model_path, 'wb') as f:
+        with tf.io.gfile.GFile(pb_model_path, "wb") as f:
             f.write(graph_def.SerializeToString())
 
         # Convert to OpenVINO IR

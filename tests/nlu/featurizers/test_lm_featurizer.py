@@ -51,11 +51,11 @@ def skip_on_CI(model_name: Text, model_weights: Text, use_openvino: bool) -> boo
     Only applies when skip_model_load=False
     """
     # First check if CI
-    return (
-        bool(os.environ.get("CI"))
-        or (use_openvino and model_weights != "distilbert-base-uncased") or
-        (model_name == "bert"
-        and (not model_weights or model_weights == "rasa/LaBSE"))
+    return bool(os.environ.get("CI")) and (
+        use_openvino
+        and model_weights != "distilbert-base-uncased"
+        or model_name == "bert"
+        and (not model_weights or model_weights == "rasa/LaBSE")
     )
 
 
