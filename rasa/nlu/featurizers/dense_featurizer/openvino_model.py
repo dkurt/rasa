@@ -1,6 +1,5 @@
 import os
 import sys
-import shutil
 import subprocess
 import logging
 
@@ -8,7 +7,9 @@ from typing import Any, List, Text, Dict
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.python.framework.convert_to_constants import convert_variables_to_constants_v2
+from tensorflow.python.framework.convert_to_constants import (
+    convert_variables_to_constants_v2,
+)
 from openvino.inference_engine import IECore
 
 from transformers.file_utils import hf_bucket_url, cached_path
@@ -49,10 +50,10 @@ class OpenVINOModel:
         # output will match.
         self.max_length = config.get("openvino_max_length", 0)
 
-    def _load_model(self, input_ids: np.ndarray, attention_mask: np.ndarray) -> None:
-        if self.model_name in failed_models:
+        if model_name in failed_models:
             raise Exception("Model conversion failed before")
 
+    def _load_model(self, input_ids: np.ndarray, attention_mask: np.ndarray) -> None:
         # Check that model is in cache already
         url = hf_bucket_url(self.model_name, filename="tf_model.h5")
         path = cached_path(url, cache_dir=self.cache_dir)
@@ -64,8 +65,6 @@ class OpenVINOModel:
                 self._convert_model(path, input_ids, attention_mask)
             except Exception as e:
                 logger.error(str(e))
-
-            if not os.path.exists(xml_path):
                 failed_models.append(self.model_name)
                 raise Exception("Model conversion failed")
 
@@ -77,14 +76,20 @@ class OpenVINOModel:
     ) -> None:
         cache_dir = os.path.dirname(tf_weights_path)
 
-        func = tf.function(lambda input_ids, attention_mask: self.model(input_ids, attention_mask=attention_mask))
-        func = func.get_concrete_function(input_ids=tf.TensorSpec((None, None), tf.int32, name="input_ids"),
-                                          attention_mask=tf.TensorSpec((None, None), tf.int32, name="attention_mask"))
+        func = tf.function(
+            lambda input_ids, attention_mask: self.model(
+                input_ids, attention_mask=attention_mask
+            )
+        )
+        func = func.get_concrete_function(
+            input_ids=tf.TensorSpec((None, None), tf.int32, name="input_ids"),
+            attention_mask=tf.TensorSpec((None, None), tf.int32, name="attention_mask"),
+        )
         frozen_func = convert_variables_to_constants_v2(func)
         graph_def = frozen_func.graph.as_graph_def()
 
         pb_model_path = os.path.join(cache_dir, "frozen_graph.pb")
-        with tf.io.gfile.GFile(pb_model_path, 'wb') as f:
+        with tf.io.gfile.GFile(pb_model_path, "wb") as f:
             f.write(graph_def.SerializeToString())
 
         # Convert to OpenVINO IR
@@ -107,7 +112,7 @@ class OpenVINOModel:
                 "--data_type",
                 "FP32" if self.model_name == "distilbert-base-uncased" else "FP16",
             ],
-            check=False,
+            check=True,
         )
 
         os.remove(pb_model_path)
