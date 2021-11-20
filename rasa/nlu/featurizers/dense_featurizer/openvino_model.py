@@ -115,7 +115,10 @@ class OpenVINOModel:
             check=True,
         )
 
-        os.remove(pb_model_path)
+        try:
+            os.remove(pb_model_path)
+        except Exception:
+            pass
 
     def _init_model(self, input_ids: np.ndarray, attention_mask: np.ndarray) -> None:
         # Reshape model in case of different input shape (batch is computed sequently)

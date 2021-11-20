@@ -130,8 +130,6 @@ CacheControl = "^0.12.9"
 randomname = "^0.1.5"
 keras = "<2.7.0"
 sanic-routing = "^0.7.2"
-openvino = "2021.4.2"
-experimental-openvino-mo = "2021.4.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest-cov = "^2.10.0"
@@ -174,7 +172,8 @@ datadog = "^0.43.0"
 spacy = [ "spacy",]
 jieba = [ "jieba",]
 transformers = [ "transformers",]
-full = [ "spacy", "transformers", "jieba",]
+openvino = [ "openvino", "transformers",]
+full = [ "spacy", "transformers", "jieba", "openvino",]
 gh-release-notes = [ "github3.py",]
 
 [tool.poetry.scripts]
@@ -202,6 +201,10 @@ optional = true
 
 [tool.poetry.dependencies.transformers]
 version = ">=2.4,<2.12"
+optional = true
+
+[tool.poetry.dependencies.openvino]
+version = "2021.4.2"
 optional = true
 
 [tool.poetry.dependencies.jieba]
