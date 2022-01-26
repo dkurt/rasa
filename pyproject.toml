@@ -172,7 +172,8 @@ datadog = "^0.43.0"
 spacy = [ "spacy",]
 jieba = [ "jieba",]
 transformers = [ "transformers",]
-full = [ "spacy", "transformers", "jieba",]
+openvino = [ "optimum-openvino",]
+full = [ "spacy", "transformers", "jieba", "optimum-openvino",]
 gh-release-notes = [ "github3.py",]
 
 [tool.poetry.scripts]
@@ -200,6 +201,10 @@ optional = true
 
 [tool.poetry.dependencies.transformers]
 version = ">=2.4,<2.12"
+optional = true
+
+[tool.poetry.dependencies.optimum-openvino]
+version = "0.0.2.dev0"
 optional = true
 
 [tool.poetry.dependencies.jieba]
